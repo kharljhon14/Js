@@ -1,11 +1,29 @@
 const imgContainer = document.querySelector(".image-container");
 const loader = document.querySelector(".loader");
 
+let ready = false;
+let imgsLoaded = 0;
+let totalImgs = 0;
 let photosArray = [];
+let initialLoad = true;
 
-const count = 10;
+let imgCount = 5;
 const apiKey = "sLuG97xLhmkeLQHqVOgfeN3JJu6eqvmll-FBWmdg29Q";
-const apiURL = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
+let apiURL = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${imgCount}`;
+
+function updateAPIURLWithNewCount(imgCount) {
+  apiURL = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${imgCount}`;
+}
+
+//Check if all imgs are loaded
+function imgLoaded() {
+  imgsLoaded++;
+  if (imgsLoaded === totalImgs) {
+    loader.hidden = true;
+    ready = true;
+    initialLoad = false;
+  }
+}
 
 //Helper function for setting up the attributes
 function setAttributes(element, attributes) {
@@ -16,6 +34,8 @@ function setAttributes(element, attributes) {
 
 //Create Elements for links and photos
 function displayPhotos() {
+  imgsLoaded = 0;
+  totalImgs = photosArray.length;
   photosArray.forEach((photo) => {
     const item = document.createElement("a");
     setAttributes(item, { href: photo.links.html, target: "_blank" });
@@ -25,6 +45,9 @@ function displayPhotos() {
       alt: photo.alt_description,
       title: photo.alt_description,
     });
+
+    //if img is loaded
+    img.addEventListener("load", imgLoaded());
     item.appendChild(img);
     imgContainer.appendChild(item);
   });
@@ -34,11 +57,26 @@ async function getPhotos() {
   try {
     const res = await fetch(apiURL);
     photosArray = await res.json();
-    console.log(photosArray);
+
+    if (initialLoad) {
+      updateAPIURLWithNewCount(30);
+      initialLoad = false;
+    }
     displayPhotos();
   } catch (err) {
     console.log(err);
   }
 }
+
+//Infinite Scroll
+window.addEventListener("scroll", () => {
+  if (
+    window.innerHeight + window.scrollY >= document.body.offsetHeight - 3000 &&
+    ready
+  ) {
+    ready = false;
+    getPhotos();
+  }
+});
 
 getPhotos();
