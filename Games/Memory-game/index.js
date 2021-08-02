@@ -1,26 +1,30 @@
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 
-context.strokeStyle = "#fff";
-context.fillStyle = "#009900";
-for (let x = 0; x < canvas.width; x += 10) {
-  context.beginPath();
-  context.moveTo(x, 0);
-  context.lineTo(x, canvas.height);
-  context.lineWidth = x % 50 == 0 ? 0.5 : 0.25;
-  if (x % 50 == 0) {
-    context.fillText(x, x, 10);
-  }
-  context.stroke();
-}
+drawGrid(context);
 
-for (let y = 0; y < canvas.height; y += 10) {
-  context.beginPath();
-  context.moveTo(0, y);
-  context.lineTo(canvas.width, y);
-  context.lineWidth = y % 50 == 0 ? 0.5 : 0.25;
-  if (y % 50 == 0) {
-    context.fillText(y, 0, y + 10);
-  }
-  context.stroke();
-}
+// context.beginPath();
+context.strokeStyle = "#fff";
+context.fillStyle = "#fff";
+context.lineWidth = 2;
+// context.moveTo(50, 50);
+// context.lineTo(150, 250);
+// context.lineTo(150, 150);
+// context.lineTo(250, 150);
+// context.lineTo(50, 50);
+// context.stroke();
+// context.fillText("(50, 50)", 30, 40);
+// context.fillText("(150, 250)", 130, 260);
+// // context.fillText("(150, 150)", 125, 145);
+// context.fillText("(250, 150)", 225, 165);
+// context.fill();
+
+context.beginPath()
+context.moveTo(50, 250);
+context.quadraticCurveTo(25, 300, 50, 350);
+context.quadraticCurveTo(100,350, 150, 250);
+context.closePath();
+context.strokeStyle = "#FFFF00";
+context.fillStyle = "#000000";
+context.fill();
+context.stroke();
