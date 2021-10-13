@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", Initialize);
 document.addEventListener("keydown", (evt) => {
    let key = evt.key;
 
-   if()
    if (key == "a"){
       player.x -= player.maxSpeed;
    } 
@@ -45,13 +44,8 @@ document.addEventListener("keydown", (evt) => {
    setPlayerposition();
 });
 
-document.addEventListener("keyup", (evt) => {
-
-
 //update Player Position
 function setPlayerposition() {
    player.el.style.top = player.y + "px";
    player.el.style.left = player.x + "px";
 }
-
-console.log(Date.now());
