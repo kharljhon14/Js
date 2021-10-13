@@ -38,7 +38,7 @@ async function getPhotos() {
     displayPhotos();
   } catch (err) {
     console.log(err);
-  }
+  } identifier
 }
 
 getPhotos();
